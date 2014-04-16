@@ -18,6 +18,7 @@ namespace Implementation
     /// <summary>
     /// MainModel
     /// </summary>
+    [DataContract]
     public class MainModel : INotifyPropertyChanged
     {
         #region Singleton
@@ -58,6 +59,7 @@ namespace Implementation
         /// <summary>
         /// Last result from the backend
         /// </summary>
+        [DataMember]
         public string Result
         {
             get { return _result; }

@@ -3,11 +3,13 @@ using Implementation.Manager;
 using Polenter.Serialization;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TheFactorM.Device.Persistence;
 
 namespace Implementation
 {
@@ -56,7 +58,7 @@ namespace Implementation
 
         private void ApplyResponseToModel(string result)
         {
-            MainModel.Instance.Result = result;
+            MainModel.Instance.Result = string.Format(CultureInfo.InvariantCulture, "{0} -  {1}", DateTime.Now.ToLongTimeString(), result);
         }
 
         #region Business logic
@@ -68,13 +70,9 @@ namespace Implementation
         {
             lock (FileLock)
             {
-                string targetFileName = Constants.MainModelFileName;
-
-                if (IsolatedStorageFile.GetUserStoreForApplication().FileExists(targetFileName))
-                using (IsolatedStorageFileStream sourceStream = IsolatedStorageFile.GetUserStoreForApplication().OpenFile(targetFileName, FileMode.Open))
+                using (var storage = new IsolatedStorageUtil<MainModel>())
                 {
-                    //Deserialize file data
-                    var savedModel = (MainModel)new SharpSerializer(true).Deserialize(sourceStream);
+                    var savedModel = storage.LoadData(Constants.MainModelFileName, null);
                     MainModel.LoadInstance(savedModel);
                 }
             }
@@ -87,7 +85,6 @@ namespace Implementation
         public static Task SaveMainModel()
         {
             var tcs = new TaskCompletionSource<bool>();
-            tcs.SetResult(false);
 
             string targetFileName = Constants.MainModelFileName;
 
