@@ -12,6 +12,7 @@ using Android.Widget;
 using System.Threading.Tasks;
 using System.Net.Http;
 using System.Globalization;
+using ModernHttpClient;
 
 namespace Implementation.Manager
 {
@@ -31,7 +32,7 @@ namespace Implementation.Manager
         {
             string result = null;
 
-            using (var client = new HttpClient())
+            using (var client = new HttpClient(new OkHttpNetworkHandler()))
             {
                 string url = string.Format(CultureInfo.InvariantCulture, RequestUrl, miliseconds);
                 var response = await client.GetAsync(url);

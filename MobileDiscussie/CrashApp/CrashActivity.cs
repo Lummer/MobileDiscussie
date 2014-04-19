@@ -9,11 +9,13 @@ using Android.OS;
 using Implementation;
 using Android.Content.PM;
 using System.Globalization;
+using Xamarin.ActionbarSherlockBinding.App;
+using TheFactorM.Device;
 
 namespace CrashApp
 {
-    [Activity(Label = "CrashApp", MainLauncher = true, Icon = "@drawable/icon", ConfigurationChanges = ConfigChanges.Orientation)]
-    public class CrashActivity : Activity, IDialogInterfaceOnClickListener
+    [Activity(Label = "CrashApp", Icon = "@drawable/icon", Theme = "@style/Theme.Sherlock.Light", ConfigurationChanges = ConfigChanges.Orientation)]
+    public class CrashActivity : SherlockActivity, IDialogInterfaceOnClickListener
     {
         private static AlertDialog _dialog;
 
@@ -40,7 +42,11 @@ namespace CrashApp
         protected override void OnStart()
         {
             base.OnStart();
+
+            DiscussieController.LoadMainModel();
+
             _sendButton.Click += DoRequest;
+            DeviceContext.Current.Log.WriteInformational("OnStart");
         }
 
         /// <summary>
@@ -50,9 +56,8 @@ namespace CrashApp
         {
             base.OnResume();
 
-            DiscussieController.LoadMainModel();
-
             BindMainModel();
+            DeviceContext.Current.Log.WriteInformational("OnResume");
         }
 
         /// <summary>
@@ -61,6 +66,7 @@ namespace CrashApp
         protected override void OnPause()
         {
             base.OnPause();
+            DeviceContext.Current.Log.WriteInformational("OnPause");
         }
 
         /// <summary>
@@ -70,16 +76,38 @@ namespace CrashApp
         {
             base.OnStop();
             _sendButton.Click -= DoRequest;
+            DeviceContext.Current.Log.WriteInformational("OnStop");
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+
+            _sendButton.Dispose();
+            _inputEditText.Dispose();
+            _outputTextView.Dispose();
+
+            DeviceContext.Current.Log.WriteInformational("OnDestroy");
         }
 
         #endregion
 
         private void BindMainModel()
         {
-            _outputTextView.Text = MainModel.Instance.Result;
+            RunOnUiThread(() =>
+            {
+                try
+                {
+                    _outputTextView.Text = MainModel.Instance.Result;
+                }
+                catch (Exception ex)
+                {
+                    DeviceContext.Current.Log.WriteError(ex);
+                }
+            });
         }
 
-        private async void DoRequest(object sender, EventArgs e)
+        private void DoRequest(object sender, EventArgs e)
         {
             Button typedSender = (Button)sender;
 
@@ -87,30 +115,37 @@ namespace CrashApp
             _inputEditText.Enabled = false;
 
             _outputTextView.Text = "Request busy...";
-
-            try
+            
+            DeviceContext.Current.RunOnBackgroundThread(async () =>
             {
-                int input = 0;
-                if (int.TryParse(_inputEditText.Text, out input))
+                try
                 {
-                    await DiscussieController.Instance.DoRequest(input);
-                    BindMainModel();
+                    int input = 0;
+                    if (int.TryParse(_inputEditText.Text, out input))
+                    {
+                        await DiscussieController.Instance.DoRequest(input);
+                        BindMainModel();
+                    }
+                    else
+                    {
+                        ShowErrorDialog("Vul een integer in!");
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    ShowErrorDialog("Vul een integer in!");
+                    //do stuff with the error
+                    DeviceContext.Current.Log.WriteError(ex);
+                    ShowErrorDialog(ex.ToString());
                 }
-            }
-            catch (Exception ex)
-            {
-                //do stuff with the error
-                ShowErrorDialog(ex.ToString());
-            }
-            finally
-            {
-                typedSender.Enabled = true;
-                _inputEditText.Enabled = true;
-            }
+                finally
+                {
+                    RunOnUiThread(() =>
+                        {
+                            typedSender.Enabled = true;
+                            _inputEditText.Enabled = true;
+                        });
+                }
+            });
         }
 
         private void ShowErrorDialog(string message)

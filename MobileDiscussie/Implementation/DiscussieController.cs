@@ -9,6 +9,7 @@ using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TheFactorM.Device;
 using TheFactorM.Device.Persistence;
 
 namespace Implementation
@@ -70,10 +71,18 @@ namespace Implementation
         {
             lock (FileLock)
             {
-                using (var storage = new IsolatedStorageUtil<MainModel>())
+                try
                 {
-                    var savedModel = storage.LoadData(Constants.MainModelFileName, null);
-                    MainModel.LoadInstance(savedModel);
+                    using (var storage = new IsolatedStorageUtil<MainModel>())
+                    {
+                        var savedModel = storage.LoadData(Constants.MainModelFileName, null);
+                        MainModel.LoadInstance(savedModel);
+                    }
+                }
+                catch (Exception e)
+                {
+                    DeviceContext.Current.Log.WriteError("Unable to load saved status from serialized MainModel, see exception details below");
+                    DeviceContext.Current.Log.WriteError(e);
                 }
             }
         }
@@ -85,14 +94,17 @@ namespace Implementation
         public static Task SaveMainModel()
         {
             var tcs = new TaskCompletionSource<bool>();
-
-            string targetFileName = Constants.MainModelFileName;
-
-            using (IsolatedStorageFileStream targetFile = IsolatedStorageFile.GetUserStoreForApplication().CreateFile(targetFileName))
+            try
             {
-                //Serialize file data
-                new SharpSerializer(true).Serialize(MainModel.Instance, targetFile);
-                tcs.SetResult(true);
+                using (var storage = new IsolatedStorageUtil<MainModel>())
+                {
+                    storage.SaveData(MainModel.Instance, Constants.MainModelFileName, null);
+                    tcs.SetResult(true);
+                }
+            }
+            catch (Exception e)
+            {
+                tcs.SetException(e);
             }
 
             return tcs.Task;
