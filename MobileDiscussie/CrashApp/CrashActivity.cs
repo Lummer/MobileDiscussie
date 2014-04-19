@@ -9,16 +9,13 @@ using Android.OS;
 using Implementation;
 using Android.Content.PM;
 using System.Globalization;
-using Xamarin.ActionbarSherlockBinding.App;
 using TheFactorM.Device;
 
 namespace CrashApp
 {
-    [Activity(Label = "CrashApp", Icon = "@drawable/icon", Theme = "@style/Theme.Sherlock.Light", ConfigurationChanges = ConfigChanges.Orientation)]
-    public class CrashActivity : SherlockActivity, IDialogInterfaceOnClickListener
+    [Activity(Label = "CrashApp", MainLauncher = true, Icon = "@drawable/icon")]
+    public class CrashActivity : BaseActivity
     {
-        private static AlertDialog _dialog;
-
         private Button _sendButton;
         private EditText _inputEditText;
         private TextView _outputTextView;
@@ -140,54 +137,12 @@ namespace CrashApp
                 finally
                 {
                     RunOnUiThread(() =>
-                        {
-                            typedSender.Enabled = true;
-                            _inputEditText.Enabled = true;
-                        });
+                    {
+                        typedSender.Enabled = true;
+                        _inputEditText.Enabled = true;
+                    });
                 }
             });
-        }
-
-        private void ShowErrorDialog(string message)
-        {
-            RunOnUiThread(() =>
-            {
-                var builder = new AlertDialog.Builder(this)
-                                .SetTitle("Error")
-                                .SetMessage(message)
-                                .SetPositiveButton(Resource.String.Ok, this)
-                                .SetCancelable(false);
-
-                if (_dialog != null && _dialog.IsShowing)
-                {
-                    _dialog.Dismiss();
-                }
-                _dialog = builder.Create();
-                _dialog.Show();
-            });
-        }
-
-        #region IDialogInterfaceOnClickListener
-
-        /// <summary>
-        /// This method will be invoked when a button in the dialog is clicked. 
-        /// </summary>
-        /// <param name="dialog">The dialog that received the click.</param>
-        /// <param name="which">The button that was clicked</param>
-        public void OnClick(IDialogInterface dialog, int which)
-        {
-            dialog.Dismiss();
-        }
-
-        #endregion
-
-        /// <summary>
-        /// Called when the activity has detected the user's press of the back key.
-        /// </summary>
-        public override void OnBackPressed()
-        {
-            base.OnBackPressed();
-            this.Finish();
         }
     }
 }

@@ -78,6 +78,9 @@ namespace Implementation
 		public partial class String
 		{
 			
+			// aapt resource value: 0x7f030003
+			public static int Ok = 2130903043;
+			
 			// aapt resource value: 0x7f030002
 			public static int button_send = 2130903042;
 			

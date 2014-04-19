@@ -9,9 +9,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: global::Android.Runtime.ResourceDesignerAttribute("CrashApp.Resource", IsApplication=true)]
+[assembly: global::Android.Runtime.ResourceDesignerAttribute("SimpleFix.Resource", IsApplication=true)]
 
-namespace CrashApp
+namespace SimpleFix
 {
 	
 	
@@ -26,15 +26,15 @@ namespace CrashApp
 		
 		public static void UpdateIdValues()
 		{
-			global::ModernHttpClient.Resource.String.library_name = global::CrashApp.Resource.String.library_name;
-			global::Implementation.Resource.Id.message = global::CrashApp.Resource.Id.message;
-			global::Implementation.Resource.Id.result = global::CrashApp.Resource.Id.result;
-			global::Implementation.Resource.Id.send = global::CrashApp.Resource.Id.send;
-			global::Implementation.Resource.Layout.RequestActivity = global::CrashApp.Resource.Layout.RequestActivity;
-			global::Implementation.Resource.String.Ok = global::CrashApp.Resource.String.Ok;
-			global::Implementation.Resource.String.button_send = global::CrashApp.Resource.String.button_send;
-			global::Implementation.Resource.String.edit_message = global::CrashApp.Resource.String.edit_message;
-			global::Implementation.Resource.String.library_name = global::CrashApp.Resource.String.library_name;
+			global::ModernHttpClient.Resource.String.library_name = global::SimpleFix.Resource.String.library_name;
+			global::Implementation.Resource.Id.message = global::SimpleFix.Resource.Id.message;
+			global::Implementation.Resource.Id.result = global::SimpleFix.Resource.Id.result;
+			global::Implementation.Resource.Id.send = global::SimpleFix.Resource.Id.send;
+			global::Implementation.Resource.Layout.RequestActivity = global::SimpleFix.Resource.Layout.RequestActivity;
+			global::Implementation.Resource.String.Ok = global::SimpleFix.Resource.String.Ok;
+			global::Implementation.Resource.String.button_send = global::SimpleFix.Resource.String.button_send;
+			global::Implementation.Resource.String.edit_message = global::SimpleFix.Resource.String.edit_message;
+			global::Implementation.Resource.String.library_name = global::SimpleFix.Resource.String.library_name;
 		}
 		
 		public partial class Attribute
@@ -70,13 +70,16 @@ namespace CrashApp
 		{
 			
 			// aapt resource value: 0x7f050000
-			public const int message = 2131034112;
-			
-			// aapt resource value: 0x7f050002
-			public const int result = 2131034114;
+			public const int MyButton = 2131034112;
 			
 			// aapt resource value: 0x7f050001
-			public const int send = 2131034113;
+			public const int message = 2131034113;
+			
+			// aapt resource value: 0x7f050003
+			public const int result = 2131034115;
+			
+			// aapt resource value: 0x7f050002
+			public const int send = 2131034114;
 			
 			static Id()
 			{
@@ -92,7 +95,10 @@ namespace CrashApp
 		{
 			
 			// aapt resource value: 0x7f030000
-			public const int RequestActivity = 2130903040;
+			public const int Main = 2130903040;
+			
+			// aapt resource value: 0x7f030001
+			public const int RequestActivity = 2130903041;
 			
 			static Layout()
 			{
@@ -107,8 +113,11 @@ namespace CrashApp
 		public partial class String
 		{
 			
+			// aapt resource value: 0x7f040005
+			public const int ApplicationName = 2130968581;
+			
 			// aapt resource value: 0x7f040004
-			public const int ApplicationName = 2130968580;
+			public const int Hello = 2130968580;
 			
 			// aapt resource value: 0x7f040002
 			public const int Ok = 2130968578;
