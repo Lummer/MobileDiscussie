@@ -42,7 +42,7 @@ namespace SimpleFix
         {
             base.OnStart();
 
-            DiscussieController.LoadMainModel();
+            DiscussionController.LoadMainModel();
 
             _sendButton.Click += DoRequest;
             _viewmodel.PropertyChanged += ViewModelUpdate;
@@ -77,6 +77,7 @@ namespace SimpleFix
         {
             base.OnStop();
             _sendButton.Click -= DoRequest;
+            _viewmodel.PropertyChanged -= ViewModelUpdate;
             DeviceContext.Current.Log.WriteInformational("OnStop");
         }
 
@@ -102,13 +103,13 @@ namespace SimpleFix
             }
             else
             {
-                ShowErrorDialog("Vul een integer in!");
+                ShowErrorDialog("Input should be an integer!");
             }
         }
 
         private void ViewModelUpdate(object sender, System.ComponentModel.PropertyChangedEventArgs args)
         {
-            if (args.PropertyName == "ActieBezig" || args.PropertyName == "RequestStatus")
+            if (args.PropertyName == "ActionBusy" || args.PropertyName == "RequestStatus")
             {
                 BindViewModel();
             }
@@ -123,8 +124,8 @@ namespace SimpleFix
             {
                 try
                 {
-                    _sendButton.Enabled = !_viewmodel.ActieBezig;
-                    _inputEditText.Enabled = !_viewmodel.ActieBezig;
+                    _sendButton.Enabled = !_viewmodel.ActionBusy;
+                    _inputEditText.Enabled = !_viewmodel.ActionBusy;
                     _outputTextView.Text = _viewmodel.RequestStatus;
                 }
                 catch (Exception ex)

@@ -23,10 +23,10 @@ namespace SimpleFix
     {
         #region privates
 
-        private bool _actiebezig;
+        private bool _actionBusy;
         private string _requestStatus;
         private string _errorMessage;
-        private DiscussieController _discussieController;
+        private DiscussionController _discussieController;
 
         #endregion
 
@@ -35,14 +35,14 @@ namespace SimpleFix
         /// <summary>
         /// If the is being refreshed
         /// </summary>
-        public bool ActieBezig
+        public bool ActionBusy
         {
-            get { return _actiebezig; }
+            get { return _actionBusy; }
             set
             {
-                if (_actiebezig != value)
+                if (_actionBusy != value)
                 {
-                    _actiebezig = value;
+                    _actionBusy = value;
                     OnPropertyChanged();
                 }
             }
@@ -87,14 +87,14 @@ namespace SimpleFix
         /// <param name="lenght"></param>
         public async void DoRequest(int lenght)
         {
-            if (!ActieBezig)
+            if (!ActionBusy)
             {
-                ActieBezig = true;
+                ActionBusy = true;
                 try
                 {
                     RequestStatus = "Request busy...";
 
-                    await DiscussieController.Instance.DoRequest(lenght);
+                    await DiscussionController.Instance.DoRequest(lenght);
                     
                     RequestStatus = MainModel.Instance.Result;
                 }
@@ -104,7 +104,7 @@ namespace SimpleFix
                 }
                 finally
                 {
-                    ActieBezig = false;
+                    ActionBusy = false;
                 }
             }
         }
@@ -116,9 +116,9 @@ namespace SimpleFix
         /// <summary>
         /// Creates the view model
         /// </summary>
-        public RequestViewModel()
+        private RequestViewModel()
         {
-            _discussieController = new DiscussieController();
+            _discussieController = DiscussionController.Instance;
         }
 
         #endregion

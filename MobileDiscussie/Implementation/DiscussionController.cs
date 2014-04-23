@@ -18,18 +18,18 @@ namespace Implementation
     /// Controller for the app
     /// Contains all business logic
     /// </summary>
-    public class DiscussieController : IDisposable
+    public class DiscussionController : IDisposable
     {
         #region Singleton
 
-        private static DiscussieController _Instance = null;
+        private static DiscussionController _Instance = null;
 
         /// <summary>
         /// The controller instance to use.
         /// </summary>
-        public static DiscussieController Instance
+        public static DiscussionController Instance
         {
-            get { return _Instance ?? (_Instance = new DiscussieController()); }
+            get { return _Instance ?? (_Instance = new DiscussionController()); }
         }
 
         #endregion
@@ -37,7 +37,7 @@ namespace Implementation
         private IRequestAgent _requestAgent;
         private static object FileLock = new object();
 
-        public DiscussieController ()
+        private DiscussionController ()
         {
             _requestAgent = new RequestAgent();
         }
@@ -126,7 +126,7 @@ namespace Implementation
         /// <summary>
         /// Destructor
         /// </summary>
-        ~DiscussieController()
+        ~DiscussionController()
         {
             Dispose(false);
         }

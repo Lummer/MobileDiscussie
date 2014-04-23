@@ -40,7 +40,7 @@ namespace CrashApp
         {
             base.OnStart();
 
-            DiscussieController.LoadMainModel();
+            DiscussionController.LoadMainModel();
 
             _sendButton.Click += DoRequest;
             DeviceContext.Current.Log.WriteInformational("OnStart");
@@ -120,12 +120,12 @@ namespace CrashApp
                     int input = 0;
                     if (int.TryParse(_inputEditText.Text, out input))
                     {
-                        await DiscussieController.Instance.DoRequest(input);
+                        await DiscussionController.Instance.DoRequest(input);
                         BindMainModel();
                     }
                     else
                     {
-                        ShowErrorDialog("Vul een integer in!");
+                        ShowErrorDialog("Input should be an integer!");
                     }
                 }
                 catch (Exception ex)

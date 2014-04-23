@@ -24,7 +24,7 @@ namespace Implementation.Manager
         private const string RequestUrl = "http://mobilediscussie.azurewebsites.net//api/request/{0}";
 
         /// <summary>
-        /// Does  a request to the backend that takes the given length
+        /// Does a request to the backend that takes the given length
         /// </summary>
         /// <param name="miliseconds">How long the request should take</param>
         /// <returns>Response string</returns>

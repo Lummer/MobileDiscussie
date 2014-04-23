@@ -56,7 +56,7 @@
   <ItemGroup>
     <Compile Include="BaseActivity.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="DiscussieController.cs" />
+    <Compile Include="DiscussionController.cs" />
     <Compile Include="MainModel.cs" />
     <Compile Include="Manager\IRequestAgent.cs" />
     <Compile Include="Manager\RequestAgent.cs" />

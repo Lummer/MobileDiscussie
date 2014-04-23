@@ -19,7 +19,7 @@ namespace Implementation.Manager
     public interface IRequestAgent
     {
         /// <summary>
-        /// Does  a request to the backend that takes the given length
+        /// Does a request to the backend that takes the given length
         /// </summary>
         /// <param name="miliseconds">How long the request should take</param>
         /// <returns>Response string</returns>
